@@ -1,61 +1,29 @@
-// Every tuning number and colour in one place. The playfield is a fixed 1280x720 logical area;
-// the renderer scales it to the window, so no rule below depends on the screen size.
+// Layout and rule constants for Twin Vista: every number the rest of the game shares, in one
+// place. The canvas has a fixed internal size and is scaled by CSS to fit the window, so all
+// drawing and all click maths happen in these view coordinates.
 
-export const FIELD = { width: 1280, height: 720, groundY: 664 };
+/** The whole stage: HUD on top, two panels in the middle, a message-and-buttons strip below. */
+export const VIEW_WIDTH = 1184;
+export const VIEW_HEIGHT = 576;
+export const HUD_HEIGHT = 76;
 
-/** The simulation's fixed step, in seconds: 60 updates a second whatever the display's rate. */
-export const STEP = 1 / 60;
+/** One picture panel. Scene art is painted in a 568 by 400 space that both panels share. */
+export const PANEL_WIDTH = 568;
+export const PANEL_HEIGHT = 400;
+export const PANEL_TOP = 92;
+export const PANEL_LEFT_X = 16;
+export const PANEL_RIGHT_X = 600;
+export const FOOTER_TOP = 508;
 
-export const PLAYER = {
-  width: 72,
-  height: 24,
-  speed: 560,
-  invulnerable: 1.5,
-};
+/** A click counts as a find when it lands within the difference's radius, but never less than this. */
+export const CLICK_MIN_RADIUS = 26;
 
-export const LIVES = 3;
+/** The scoring and pressure rules of a scene. */
+export const HINTS_PER_SCENE = 3;
+export const HINT_COST = 25;
+export const FIND_POINTS = 100;
+export const MISS_TIME_PENALTY = 3;
+export const CLEAR_BONUS_PER_SECOND = 2;
 
-export const BLOCK = {
-  minWidth: 40,
-  maxWidth: 110,
-  height: 36,
-  speed: 240,
-  speedPerLevel: 30,
-  speedJitter: 90,
-  interval: 0.55,
-  intervalScale: 0.88,
-  minInterval: 0.14,
-  dodgePoints: 1,
-};
-
-export const COIN = {
-  size: 24,
-  speed: 190,
-  speedPerLevel: 14,
-  interval: 1.4,
-  intervalJitter: 0.8,
-  points: 10,
-};
-
-/** Seconds of play per level, and the last level: speeds and spawn rates stop growing there. */
-export const LEVEL = { seconds: 12, max: 12 };
-
-/** How many falling things can exist at once; the pool is allocated once, at boot. */
-export const POOL_SIZE = 64;
-
-export const PALETTE = {
-  backdrop: '#11141b',
-  sky: '#1b1f2a',
-  ground: '#2a3040',
-  player: '#4fc3f7',
-  block: '#e5534b',
-  coin: '#f2c94c',
-  panel: '#252b38',
-  text: '#eef1f5',
-  muted: '#8b93a3',
-};
-
-export const FONT = 'system-ui, -apple-system, "Segoe UI", sans-serif';
-
-/** Where the best score is kept between visits (this browser only). */
-export const BEST_KEY = 'block-dodger.best';
+/** Where the best full-run score is kept between visits. */
+export const BEST_KEY = 'twin-vista-best';

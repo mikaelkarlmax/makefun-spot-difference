@@ -1,12 +1,23 @@
-// A small seeded random number generator (mulberry32): the same seed gives the same game,
-// which is what makes the screenshot scenes repeatable.
+// A tiny deterministic random source. The painters scatter stars, sparkles and shimmer with a
+// fixed seed per scene, so the left and right panels of a scene are painted from exactly the
+// same rolls and can never drift apart by accident: the only differences between the panels
+// are the ones the scene designer planted.
 
+/** Returns a function that yields the same sequence of numbers in [0, 1) for the same seed. */
 export function createRandom(seed) {
-  let a = seed | 0;
-  return function random() {
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  let state = seed >>> 0;
+  return function nextRandom() {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    return state / 4294967296;
   };
+}
+
+/** Scatters `count` points in a rectangle, from a seeded source so both panels agree. */
+export function scatterPoints(seed, count, width, height) {
+  const next = createRandom(seed);
+  const points = [];
+  for (let index = 0; index < count; index += 1) {
+    points.push({ x: next() * width, y: next() * height, r: 0.8 + next() * 1.6 });
+  }
+  return points;
 }
